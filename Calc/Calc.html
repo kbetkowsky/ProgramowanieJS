@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+    <div>
+        <input type="number" placeholder="Number 1" id="num1" />
+        <br />
+        <input type="number" placeholder="Number 2" id="num2" />
+        <br />
+        <button id="add">+</button>
+        <button id="med">𝑥̅</button>
+        <button id="max">MAX</button>
+        <button id="min">MIN</button><br />
+        <input type="number" readonly id="result" />
+    </div>
+    <script type="text/javascript">
+        let n1 = document.getElementById("num1");
+        let n2 = document.getElementById("num2");
+        let res = document.getElementById("result");
+
+        document.getElementById("add").addEventListener("click", function () {
+            res.value = parseInt(n1.value) + parseInt(n2.value);
+        });
+        document.getElementById("med").addEventListener("click", function () {
+            res.value = (parseInt(n1.value) + parseInt(n2.value)) / 2;
+        });
+        document.getElementById("max").addEventListener("click", function () {
+            res.value = Math.max(n1.value, n2.value)
+        });
+        document.getElementById("min").addEventListener("click", function () {
+            res.value = Math.min(n1.value, n2.value)
+        });
+    </script>
+</body>
+
+</html>
