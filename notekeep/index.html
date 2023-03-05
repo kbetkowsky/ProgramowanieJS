@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Notatnik</title>
+    <style>
+        .note {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .note input[type="color"] {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <input type="text" id="note-text" placeholder="Wpisz notatkę">
+        <input type="color" id="note-color" value="#ffffff">
+        <button id="add-note">Dodaj notatkę</button>
+    </div>
+    <div id="note-container"></div>
+
+    <script>
+        const saveNotes = () => {
+            localStorage.setItem("notes", JSON.stringify(notes));
+        };
+
+        const addNote = () => {
+            const noteText = document.getElementById("note-text").value;
+            const noteColor = document.getElementById("note-color").value;
+            const noteDate = new Date().toLocaleString();
+            const note = {
+                text: noteText,
+                color: noteColor,
+                date: noteDate
+            };
+            notes.push(note);
+            saveNotes();
+            displayNotes();
+            document.getElementById("note-text").value = "";
+            document.getElementById("note-color").value = "#ffffff";
+        };
+
+        const displayNotes = () => {
+            const container = document.getElementById("note-container");
+            container.innerHTML = "";
+            for (let i = 0; i < notes.length; i++) {
+                const note = notes[i];
+                const div = document.createElement("div");
+                div.className = "note";
+                div.style.backgroundColor = note.color;
+                div.innerHTML = "<p>" + note.text + "</p><p>" + note.date + "</p>";
+                const deleteButton = document.createElement("button");
+                deleteButton.innerHTML = "Usuń";
+                deleteButton.addEventListener("click", (() => {
+                    notes.splice(i, 1);
+                    saveNotes();
+                    displayNotes();
+                }));
+                div.appendChild(deleteButton);
+                container.appendChild(div);
+            }
+        };
+
+        let notes = localStorage.getItem("notes");
+        if (notes) {
+            notes = JSON.parse(notes);
+        } else {
+            notes = [];
+        }
+        displayNotes();
+
+        document.getElementById("add-note").addEventListener("click", addNote);
+    </script>
+</body>
+
+</html>
