@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Canvas</title>
+    <meta charset="UTF-8">
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="myCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+        const numBalls = 10;
+        const minDist = canvas.width * 0.2;
+        const balls = [];
+
+        for (let i = 0; i < numBalls; i++) {
+            balls.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                dx: Math.random() * 4 - 2,
+                dy: Math.random() * 4 - 2
+            });
+        }
+
+        function drawBalls() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < numBalls; i++) {
+                const ball1 = balls[i];
+                ctx.beginPath();
+                ctx.arc(ball1.x, ball1.y, 10, 0, Math.PI * 2);
+                ctx.fillStyle = "red";
+                ctx.fill();
+                ball1.x += ball1.dx;
+                ball1.y += ball1.dy;
+                if (ball1.x < 0 || ball1.x > canvas.width) {
+                    ball1.dx = -ball1.dx;
+                }
+                if (ball1.y < 0 || ball1.y > canvas.height) {
+                    ball1.dy = -ball1.dy;
+                }
+                for (let j = i + 1; j < numBalls; j++) {
+                    const ball2 = balls[j];
+                    const dist = Math.sqrt((ball1.x - ball2.x) ** 2 + (ball1.y - ball2.y) ** 2);
+                    if (dist < minDist) {
+                        ctx.beginPath();
+                        ctx.moveTo(ball1.x, ball1.y);
+                        ctx.lineTo(ball2.x, ball2.y);
+                        ctx.strokeStyle = "black";
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        setInterval(drawBalls, 30);
+    </script>
+</body>
+
+</html>
